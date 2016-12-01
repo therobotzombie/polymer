@@ -1,0 +1,28 @@
+npm install
+npm install grunt-contrib-watch --save-dev
+npm install grunt-contrib-sass --save-dev
+
+ru68has
+10980630
+=====================
+=====================
+GIT 
+git log / git status
+1) git add .
+2) git commit -m 'range input Nummer-Anzeige'
+3) git push origin master
+
+git remote add origin https://github.com/therobotzombie/probeaufgabe.git
+
+=====================
+1) Dateien aktualisieren
+=====================
+git fetch && git pull origin master
+git fetch && git pull origin bet-34_new
+
+2) Deine Änderungen hochladen
+==========================
+- erst nr 1) !!!!!
+git add -A && git commit -m "ADS" && git push origin master
+
+--------------------
