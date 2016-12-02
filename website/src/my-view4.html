@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="star-rating.html">
+
+<dom-module id="my-view4">
+    <template>
+        <style is="custom-style" include="iron-flex"></style>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+        </style>
+        <div class="card">
+            <div class="horizontal layout">
+                <div class="circle">
+                    <iron-icon icon="star-border"></iron-icon>
+                </div>
+                <div class="flex">
+                    <h1>Star Rating</h1>
+                </div>
+            </div>
+            <template is="dom-bind">
+                <star-rating value="[[userRating]]" count="[[maxRating]]"></star-rating>
+                <paper-input type="number" min="1" max="10" label="Your Rating (1 - 10)" value="{{userRating}}" maxlength="2"  autofocus required auto-validate error-message="enter some number between 1 and 10"></paper-input>
+                <paper-input type="number" min="1" max="10" label="Maximum Rating (1 - 10)" value="{{maxRating}}" maxlength="2" required auto-validate error-message="enter some number between 1 and 10"></paper-input>
+            </template>
+        </div>
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'my-view4'
+        });
+    </script>
+</dom-module>

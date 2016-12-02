@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="star-rating">
+    <template>
+        <style is="custom-style">
+            :host {
+                display: block;
+                font-family: 'Roboto', 'Noto', sans-serif;
+            }
+            iron-icon {
+                display: inline-block;
+                vertical-align: middle;
+                width: 34px;
+                height: 34px;
+                background-size: 100% 100%;
+                color: var(--app-primary-color);
+            }
+            .star-wrapper {
+                min-height: 34px;
+                margin: 20px 0 20px 0;
+            }
+        </style>
+        <div class="star-wrapper">
+            <template is="dom-repeat" items="{{stars}}" as="star">
+                <iron-icon icon="{{starIcon(star, value)}}"></iron-icon>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'star-rating',
+            properties: {
+                count: {
+                    type: Number,
+                    value: 5
+                },
+                stars: {
+                    type: Array,
+                    computed: 'starsArray(count)'
+                },
+                value: {
+                    type: Number,
+                    value: 0
+                }
+            },
+            starIcon: function(star, value) {
+               if (star < value) {
+                   return 'star';
+               } else {
+                   return 'star-border';
+               }
+            },
+            starsArray: function(count) {
+                var stars = [];
+                for (var i = 0; i < this.count; i++) {
+                    stars.push(i);
+                }
+                if (count < 11) {
+                    return stars;
+                }
+            }
+        });
+    </script>
+
+</dom-module>

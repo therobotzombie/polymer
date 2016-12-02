@@ -1,0 +1,36 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-about-view">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+        </style>
+
+        <div class="card">
+            <div class="horizontal layout">
+                <div class="circle">
+                    <iron-icon icon="perm-identity"></iron-icon>
+                </div>
+                <div class="flex">
+                    <h1>About</h1>
+                </div>
+            </div>
+            <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
+            <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
+            <ul class="list">
+                <li>Harry Potter</li>
+                <li>Books</li>
+            </ul>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'my-about-view'
+        });
+    </script>
+</dom-module>
