@@ -11,6 +11,7 @@
                 display: block;
             }
         </style>
+
         <div class="card">
             <div class="horizontal layout">
                 <div class="circle">
@@ -20,13 +21,19 @@
                     <h1>Star Rating</h1>
                 </div>
             </div>
+#
             <template is="dom-bind">
                 <star-rating value="[[userRating]]" count="[[maxRating]]"></star-rating>
-                <paper-input type="number" min="1" max="10" label="Your Rating (1 - 10)" value="{{userRating}}" maxlength="2"  autofocus required auto-validate error-message="enter some number between 1 and 10"></paper-input>
-                <paper-input type="number" min="1" max="10" label="Maximum Rating (1 - 10)" value="{{maxRating}}" maxlength="2" required auto-validate error-message="enter some number between 1 and 10"></paper-input>
-            </template>
-        </div>
 
+                <paper-input type="number" min="1" max="10" label="Your Rating (1 - 10)" value="{{userRating}}" maxlength="2"  autofocus required auto-validate error-message="enter some number between 1 and 10"></paper-input>
+                <paper-input type="number" min="1" max="10" label="Maximum Rating (1 - 10)" value="{{maxRating}}" maxlength="2" required auto-validate error-message="enter some number between 1 and 10">          </paper-input>
+            </template>
+
+            <script>
+                var tmpl = document.querySelector('template');
+                tmpl.userrating = 3;
+            </script>
+        </div>
 
     </template>
 

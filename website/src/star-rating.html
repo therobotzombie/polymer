@@ -24,6 +24,9 @@
             <template is="dom-repeat" items="{{stars}}" as="star">
                 <iron-icon icon="{{starIcon(star, value)}}"></iron-icon>
             </template>
+<!--            <template is="dom-repeat" items="[[stars]]" as="star">
+                <iron-icon icon="[[star.icon]]"></iron-icon>
+            </template>    -->
         </div>
     </template>
 
@@ -31,18 +34,31 @@
         Polymer({
             is: 'star-rating',
             properties: {
+                // number of stars to display
                 count: {
                     type: Number,
                     value: 5
                 },
+                // computed array of stars
                 stars: {
                     type: Array,
+                    // Computed property. Dynamically calculates a value based on other properties.
                     computed: 'starsArray(count)'
                 },
+                // number of selected stars
                 value: {
+                    type: Number,
+                    value: 10
+                }
+/*               max: {
                     type: Number,
                     value: 0
                 }
+                 rating: {
+                    type: Number,
+                    value: 5
+                 }
+                */
             },
             starIcon: function(star, value) {
                if (star < value) {

@@ -1,0 +1,86 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+
+<dom-module id="spotify-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        --myFavoriteColor: dodgerblue;
+      }
+      paper-icon-button {
+        --paper-icon-button-ink-color: var(--myFavoriteColor);
+      }
+    </style>
+
+    <iron-ajax auto
+        id="trackService"
+        url="[[apiURL]]"
+        params="[[searchParams]]"
+        debounce-duration="300"
+        on-response="_handleResponse"
+               last-response="{{lastResponse}}"
+               loading="{{isLoading}}"
+    >
+    </iron-ajax>
+
+    <paper-input value="{{query}}" label="Track Name"></paper-input>
+    <paper-spinner active="[[isLoading]]"></paper-spinner>
+
+    <template is="dom-repeat" items="[[lastResponse.tracks.items]]" as="track">
+      <paper-item>
+        <paper-icon-button icon="av:play-circle-filled" on-tap="_playSong"></paper-icon-button>
+        [[track.name]]
+      </paper-item>
+    </template>
+
+    <audio id="player"></audio>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'spotify-app',
+
+      properties: {
+          searchParams: {
+              type: Object,
+              computed: '_makeParams(query)'
+          }
+      },
+        _makeParams: function(query) { // private methode
+            return {
+                q: query,
+                type: 'track'
+            }
+        },
+        ready: function () {
+            this.apiURL = 'https://api.spotify.com/v1/search';
+            this.query = 'red hot chili peppers';
+           // this.$.trackService.generateRequest();
+        },
+/*        _handleResponse: function (e) {
+            //console.log(e);
+            this.tracks = e.detail.response.tracks.items;
+        },*/
+        _playSong: function (e) {
+            this.$.player.src = e.model.track.preview_url; // model ist track
+            this.$.player.addEventListener('canplay', function () {
+                self.$.player.play();
+           }),
+            // e.model.index;
+            //this.$.player.play();
+            e.target.icon =
+                e.target.icon == 'av:pause-circle-filled' ?
+                'av:play-circle-filled' : 'av:pause-circle-filled'   ;
+        }
+
+    });
+  </script>
+</dom-module>

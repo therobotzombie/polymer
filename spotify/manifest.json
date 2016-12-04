@@ -1,0 +1,6 @@
+{
+  "name": "spotify",
+  "short_name": "spotify",
+  "start_url": "/",
+  "display": "standalone"
+}
