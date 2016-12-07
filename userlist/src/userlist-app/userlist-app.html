@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="userlist-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        font-family: 'Roboto', 'Noto', sans-serif;
+      }
+     paper-card {
+        box-sizing: border-box;
+        max-width: 130px;
+        margin: 15px;
+        color: slategray;
+
+      }
+      paper-card > card-actions {
+        --paper-card-header-color: #0a3142;
+        color: #0a3142;
+      }
+      iron-pages {
+        width: 100%;
+        font-size: 20px;
+        color: white;
+        text-align: center;
+      }
+      iron-pages div {
+        width: 100%;
+        height: 100%;
+        padding: 80px 0;
+      }
+      iron-pages div:nth-child(1) {
+        background-color: var(--google-green-100);
+      }
+      iron-pages div:nth-child(2) {
+        background-color: white;
+      }
+
+    </style>
+
+    <iron-ajax
+            auto
+            url="[[apiURL]]"
+            handle-as="json"
+            last-response="{{jsondata}}"
+            loading="{{isLoading}}">
+    </iron-ajax>
+
+
+    <iron-pages selected="0">
+      <div>
+          <h1>All Users</h1>
+
+            <template is="dom-repeat" items="[[jsondata]]" as="user">
+                  <paper-card image="[[user.profileImage]]" alt="Donuts" class="amber">
+                      <div class="card-content">[[user.userName]] </div>
+<!--                      <div class="card-actions">
+                        <paper-icon-button class="favorite" icon="favorite"></paper-icon-button>
+                        <paper-icon-button class="bookmark" icon="bookmark"></paper-icon-button>
+                        <paper-icon-button class="share" icon="social:share"></paper-icon-button>
+                      </div>-->
+                  </paper-card>
+            </template>
+
+      </div>
+      <div>Two</div>
+    </iron-pages>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'userlist-app',
+      properties: {
+
+      },
+      ready: function () {
+        this.apiURL = 'https://raw.githubusercontent.com/mimuc/pwp-ws-16-17/master/06-frontend-part02/polymer/users.json';
+        document.addEventListener('click', function(e) {
+          var pages = document.querySelector('iron-pages');
+          pages.selectNext();
+        });
+      }
+    });
+
+  </script>
+</dom-module>
