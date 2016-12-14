@@ -9,6 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
@@ -20,43 +22,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icons/image-icons.html">
-<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
-
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="shared-styles.html">
 
 
 <dom-module id="my-app">
   <template>
-    <style>
+    <style  include="shared-styles">
       :host {
         --app-primary-color: #30B8A1;
         --app-secondary-color: #666;
         --accent-color: #d9287f;
         display: block;
       }
-      app-header {
-        color: #fff;
-        background-color: var(--app-primary-color);
-          text-align: center;
-      }
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
+      paper-drawer-panel {
+        --paper-drawer-panel-left-drawer-container: {
+        };
       }
 
+      paper-drawer-panel .close-button {
+        --paper-icon-button-ink-color: white;
+        float: right;
+        margin: 0;
+      }
+      .user {
+        padding:  15px;
+        border-bottom: 1px solid var(--app-secondary-color);
+      }
+      .user .circle {
+        width: 50px;
+        height: 50px;
+        line-height: 40px;
+      }
+      .user .user-name {
+        margin-left: 15px;
+        font-size: 14px;
+      }
+      .user .user-name span {
+        text-transform: uppercase;
+        font-weight: 600;
+      }
       .drawer-list {
-        margin: 50px 10px;
+        margin: 10px 0;
         display: block;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
       }
       .drawer-list a {
         display: block;
         text-transform: uppercase;
         padding: 0 16px;
         text-decoration: none;
+        font-size: 14px;
         color: var(--app-secondary-color);
         line-height: 60px;
       }
@@ -76,49 +92,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <app-drawer-layout fullbleed>
-      <!-- Drawer content -->
-      <app-drawer>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+    <paper-drawer-panel>
 
-          <a name="view4" href="/view4"><iron-icon icon="code"></iron-icon> Exercise</a>
-          <a name="about-view" href="/about-view"><iron-icon icon="favorite-border"></iron-icon> About</a>
-          <a name="view1" href="/view1"><iron-icon icon="perm-identity"></iron-icon> User List</a>
-          <a name="view2" href="/view2"><iron-icon icon="link"></iron-icon> Links</a>
-          <a name="view3" href="/view3"><iron-icon icon="communication:mail-outline"></iron-icon> Contact</a>
+      <paper-header-panel drawer>
+        <div style="height: 100%; overflow: auto;">
+          <paper-icon-button class="close-button" icon="icons:close" paper-drawer-toggle></paper-icon-button>
 
-        </iron-selector>
-      </app-drawer>
+          <div class="user">
+            <div class="horizontal layout">
+              <div class="circle">
+                <iron-icon icon="social:person"></iron-icon>
+              </div>
+              <div class="flex user-name">
+                <span>angemeldet als:</span><br>
+                username (Betreuer)
+              </div>
+            </div>
+          </div>
+          <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+            <a name="about-view" href="/about-view"><iron-icon icon="editor:monetization-on"></iron-icon> Home</a>
+            <a name="view4" href="/view4"><iron-icon icon="social:person"></iron-icon> Profil</a>
+            <a name="view1" href="/view1"><iron-icon icon="editor:format-list-bulleted"></iron-icon> Studien-Übersicht</a>
+            <a name="view2" href="/view2"><iron-icon icon="editor:mode-edit"></iron-icon> Eigene Studien</a>
+            <a name="view3" href="/view3"><iron-icon icon="icons:help-outline"></iron-icon> Hilfe</a>
+            <hr/>
+            <a href="#"><iron-icon icon="icons:exit-to-app"></iron-icon> logout</a>
+          </iron-selector>
+        </div>
+      </paper-header-panel>
 
-      <!-- Main content -->
-      <app-header-layout has-scrolling-region>
+      <!-- Main Content -->
+      <paper-header-panel main>
+        <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
 
-        <app-header condenses reveals effects="waterfall">
-          <app-toolbar>
-            <paper-menu-button>
-                <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            </paper-menu-button>
-            <div main-title>/POLYMER STUFF</div>
-          </app-toolbar>
-        </app-header>
+        <div id="content" style="height: 100%; overflow: auto;">
+          <iron-pages
+                  selected="[[page]]"
+                  attr-for-selected="name"
+                  fallback-selection="view404"
+                  role="main">
 
-        <iron-pages
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="view404"
-            role="main">
+            <my-view4 name="view4"></my-view4>
+            <my-about-view name="about-view"></my-about-view>
+            <my-view1 name="view1"></my-view1>
+            <my-view2 name="view2"></my-view2>
+            <my-view3 name="view3"></my-view3>
 
-          <my-view4 name="view4"></my-view4>
-          <my-about-view name="about-view"></my-about-view>
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
+            <my-view404 name="view404"></my-view404>
 
-          <my-view404 name="view404"></my-view404>
+          </iron-pages>
 
-        </iron-pages>
-      </app-header-layout>
-    </app-drawer-layout>
+        </div>
+      </paper-header-panel>
+
+    </paper-drawer-panel>
+
+
   </template>
 
   <script>
