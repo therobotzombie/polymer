@@ -1,6 +1,16 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../bower_components/image-mask/image-mask.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
 
 <dom-module id="my-view1">
   <template>
@@ -9,27 +19,119 @@
       :host {
         display: block;
       }
+      .text-center {
+        text-align:  center;
+      }
+      label {
+        font-weight:  bolder;
+        float:  left;
+        margin-right: 20px;
+      }
+      image-mask { margin: 10px 30px 10px 0; }
+      iron-pages {
+        width: 100%;
+      }
+      .card#profile > paper-item {
+        padding:  0;
+      }
     </style>
-    <div class="card">
-      <div class="horizontal layout">
-        <div class="circle">
-          <iron-icon icon="favorite-border"></iron-icon>
-        </div>
-        <div class="flex">
-          <h1>Stuff</h1>
-        </div>
-      </div>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
 
-    </div>
+    <iron-ajax
+            auto
+            url="[[apiURL]]"
+            handle-as="json"
+            last-response="{{jsondata}}">
+    </iron-ajax>
 
+
+ <div class="content">
+
+    <iron-pages selected="0">
+
+        <!-- USERLIST -->
+        <div class="card" id="userlist">
+            <div class="horizontal layout">
+                <div class="flex">
+                    <h1>Userlist</h1>
+                </div>
+            </div>
+            <div role="listbox">
+                <template is="dom-repeat" items="[[jsondata]]" as="user">
+                    <paper-icon-item  on-tap="toggle">
+                        <image-mask shape="circle" size="70" src="[[user.profileImage]]" title="[[user.userName]]"></image-mask>
+                        <paper-item-body>
+                            <h4>[[user.userName]]</h4>
+                            <iron-collapse id$="collapse[[user.userName]]">
+                                <paper-item-body three-line>
+                                    <div><strong>Display Name:</strong> [[user.displayName]]</div>
+                                    <div><strong>Age:</strong> [[user.age]]</div>
+                                    <div><strong>Email:</strong> [[user.emailAddress]]</div>
+                                    <div><strong>Hobbies:</strong> [[user.hobbies]]<br/><br/></div>
+                                </paper-item-body>
+                            </iron-collapse>
+                        </paper-item-body>
+                        <paper-icon-button icon="search" id$="[[user.userName]]" title="[[user.userName]]" on-tap="toggle"></paper-icon-button>
+                    </paper-icon-item>
+
+                </template>
+            </div>
+        </div>
+
+        <!-- USER PROFILE -->
+        <div class="card" id="profile">
+            <div role="listbox">
+                <template is="dom-repeat" items="[[jsondata]]" as="user">
+                    <paper-icon-item>
+                        <image-mask shape="circle" size="120" src="[[user.profileImage]]" title="[[user.userName]]" href=""></image-mask>
+                        <paper-item-body three-line>
+                            <h3>[[user.userName]]</h3>
+                            <div><strong>Display Name:</strong> [[user.displayName]]</div>
+                            <div><strong>Age:</strong> [[user.age]]</div>
+                            <div><strong>Email:</strong> [[user.emailAddress]]</div>
+                            <div><strong>Hobbies:</strong> [[user.hobbies]]<br/><br/></div>
+                        </paper-item-body>
+                    </paper-icon-item>
+                </template>
+            </div>
+        </div>
+
+    </iron-pages>
+ </div>
 
   </template>
 
   <script>
-    Polymer({
-      is: 'my-view1'
-    });
+      Polymer({
+          is: 'my-view1',
+          properties: {
+              data: {
+                  type: Array,
+                  value: function() {
+                      return [];
+                  }
+              },
+          },
+          ready: function () {
+              this.apiURL = 'https://raw.githubusercontent.com/mimuc/pwp-ws-16-17/master/06-frontend-part02/polymer/users.json';
+          },
+          _displayProfile: function (e) {
+              //alert('display');
+              var pages = document.querySelector('iron-pages');
+              pages.selectNext();
+          },
+          /**
+           *
+           * @param event
+           * @param detail
+           * @param sender
+           */
+          toggle: function (event, detail, sender) {
+              //alert('display');
+              var id = event.model.user.userName;
+              var selector = '#collapse' + id;
+              this.$$(selector).toggle();
+          }
+      });
+
   </script>
 </dom-module>
