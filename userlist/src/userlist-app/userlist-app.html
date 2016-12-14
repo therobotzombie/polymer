@@ -1,0 +1,137 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<!--<link rel="import" href="shared-styles.html">-->
+
+<dom-module id="userlist-app">
+  <template>
+    <style>
+      :host {
+          display: block;
+          font-family: 'Roboto', 'Noto', sans-serif;
+          height: 100%;
+      }
+      .content {
+          min-height: 100%;
+          height: 100%;
+          font-size: 20px;
+          padding: 20px 0px 120px 0px;
+          color: white;
+          text-align: center;
+          background-color: var(--google-green-100);
+      }
+      label {
+          font-weight: bold;
+          margin-right: 10px;
+      }
+      #userlist > paper-card {
+          margin-top: 80px;
+          box-sizing: border-box;
+          min-width: 200px;
+          color: slategray;
+          text-align: center;
+      }
+      #profile > paper-card {
+          font-size: 15px;
+          text-align: left;
+          color: #0a3142;
+          max-width: 100%;
+      }
+      paper-card .card-content {
+          padding-bottom: 30px;
+      }
+      iron-pages div {
+          width: 100%;
+          height: 100%;
+      }
+    </style>
+
+    <iron-ajax
+            auto
+            url="[[apiURL]]"
+            handle-as="json"
+            last-response="{{jsondata}}"
+            loading="{{isLoading}}">
+    </iron-ajax>
+
+    <div class="content">
+        <iron-pages selected="0">
+            <!-- ONE -->
+            <div id="userlist">
+                <h1><iron-icon icon="star"></iron-icon> USERLIST <iron-icon icon="star"></iron-icon></h1>
+                <template is="dom-repeat" items="[[jsondata]]" as="user">
+                    <paper-card>
+                        <div class="card-content">
+                            <div class="circle center-center horizontal layout" data-id="person1">
+                                <img src="[[user.profileImage]]" data-id="person1" class="circle-image">
+                            </div>
+                            [[user.userName]]
+                            <paper-icon-button icon="search" on-tap="_displayProfile"></paper-icon-button>
+                        </div>
+                    </paper-card>
+                </template>
+            </div>
+            <!-- TWO -->
+            <div id="profile">
+                <template is="dom-repeat" items="[[jsondata]]" as="user">
+                    <h1><iron-icon icon="perm-identity"></iron-icon> [[user.userName]]</h1>
+                    <paper-card alt="[[user.userName]]" class="amber">
+                        <div class="horizontal layout">
+                            <div class="circle">
+                                <img src="[[user.profileImage]]" />
+                            </div>
+                            <div class="flex">
+                                <div class="card-content">
+                                    <paper-item><label>Username:</label> [[user.userName]]</paper-item>
+                                    <paper-item><label>Anzeigename:</label> [[user.displayName]]</paper-item>
+                                    <paper-item><label>Alter:</label> [[user.age]]</paper-item>
+                                    <paper-item><label>E-Mail:</label> [[user.emailAddress]]</paper-item>
+                                    <paper-item><label>Hobbies:</label> [[user.hobbies]]</paper-item>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <paper-icon-button icon="arrow-left"></paper-icon-button>
+                        </div>
+                    </paper-card>
+                </template>
+            </div>
+        </iron-pages>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'userlist-app',
+      properties: {
+
+      },
+      ready: function () {
+        this.apiURL = 'https://raw.githubusercontent.com/mimuc/pwp-ws-16-17/master/06-frontend-part02/polymer/users.json';
+
+/*        document.addEventListener('click', function(e) {
+          var pages = document.querySelector('iron-pages');
+          pages.selectNext();
+        });*/
+      },
+      _displayProfile: function (e) {
+          var pages = document.querySelector('iron-pages');
+          pages.selectNext();
+          this.$.user.src = e.model.user; // model ist track
+            this.$.user.addEventListener('open', function () {
+                self.$.player.play();
+            })
+        }
+    });
+
+  </script>
+</dom-module>

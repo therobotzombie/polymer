@@ -1,0 +1,6 @@
+{
+  "name": "userlist",
+  "short_name": "userlist",
+  "start_url": "/",
+  "display": "standalone"
+}
